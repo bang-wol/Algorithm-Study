@@ -4,21 +4,17 @@ function solution(N, stages) {
         challenger[stage] += 1;
     }
     
-    const fails = {};
+    const fails = [];
     let total = stages.length;
     
     for (let i = 1; i <= N; i++){
-        if (challenger[i] === 0){
-            fails[i] = 0;
-            continue;
-        }
-        
-        fails[i] = challenger[i] / total;
-        
+        const failureRate = challenger[i] === 0 ? 0 : challenger[i] / total;
+        fails.push([i, failureRate]);
         total -= challenger[i];
-    }
+        
+     }
     
-    const result = Object.entries(fails).sort((a,b) => b[1] - a[1]);
+    const result = fails.sort((a, b) => b[1] - a[1] || a[0] - b[0]).map(v => v[0]);
     
-    return result.map((v) => Number(v[0]));
+    return result;
 }
